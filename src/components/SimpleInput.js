@@ -1,20 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
-
+import useInput from '../hooks/useInput'
 const SimpleInput = (props) => {
-  const [enteredname, setEnteredName] = useState('')
+
+  const { value: enteredname,
+    hasError: nameInputIsInvalid,
+    isValid: enteredNameIsValid,
+    setValueChangeHandler: setNameChangeHandler,
+    InputBlur: nameInputBlur,
+    reset: nameReset } = useInput(value => value.trim() !== '')
+
+
   const [enteredEmail, setEnteredEmail] = useState('')
   // const [enteredNameIsValid, setEmteredNameIsValid] = useState(true) // its not menaningful to set a invalid value as true
-  const [enterednameTouched, setEnteredNameTouched] = useState(false)
   const [enteredEmailTouched, setEnteredEmailTouched] = useState(false)
   const [formIsValid, setFormIsvalid] = useState(false)
 
-  const enteredNameIsValid = enteredname.trim() !== ''
-  const nameInputIsInvalid = !enteredNameIsValid && enterednameTouched
 
   const enteredEmailIsValid = enteredEmail.indexOf('@') !== -1
   const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched
 
   useEffect(() => {
+    console.log(enteredNameIsValid)
     if (enteredNameIsValid && enteredEmailIsValid) {
       setFormIsvalid(true)
     } else {
@@ -24,23 +30,13 @@ const SimpleInput = (props) => {
 
   const formSubmisstionhandler = (e) => {
     e.preventDefault();
-    setEnteredNameTouched(true)
     setEnteredEmailTouched(true)
     if (!enteredNameIsValid && !enteredEmailIsValid) {
       return
     }
-    setEnteredName('')
+    nameReset()
     setEnteredEmail('')
-    setEnteredNameTouched(false)
     setEnteredEmailTouched(false)
-  }
-
-  const nameInputBlur = e => {
-    setEnteredNameTouched(true)
-  }
-
-  const setNameChangeHandler = e => {
-    setEnteredName(e.target.value)
   }
 
   const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : ' form-control '
