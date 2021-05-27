@@ -10,17 +10,18 @@ const SimpleInput = (props) => {
     reset: nameReset } = useInput(value => value.trim() !== '')
 
 
-  const [enteredEmail, setEnteredEmail] = useState('')
-  // const [enteredNameIsValid, setEmteredNameIsValid] = useState(true) // its not menaningful to set a invalid value as true
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false)
+  const { value: enteredEmail,
+    hasError: emailInputIsInvalid,
+    isValid: enteredEmailIsValid,
+    setValueChangeHandler: setEmailChangeHandler,
+    InputBlur: emailInputBlur,
+    reset: emailReset } = useInput(value => value.indexOf('@') !== -1)
+
   const [formIsValid, setFormIsvalid] = useState(false)
 
 
-  const enteredEmailIsValid = enteredEmail.indexOf('@') !== -1
-  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched
 
   useEffect(() => {
-    console.log(enteredNameIsValid)
     if (enteredNameIsValid && enteredEmailIsValid) {
       setFormIsvalid(true)
     } else {
@@ -30,13 +31,11 @@ const SimpleInput = (props) => {
 
   const formSubmisstionhandler = (e) => {
     e.preventDefault();
-    setEnteredEmailTouched(true)
     if (!enteredNameIsValid && !enteredEmailIsValid) {
       return
     }
     nameReset()
-    setEnteredEmail('')
-    setEnteredEmailTouched(false)
+    emailReset()
   }
 
   const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : ' form-control '
@@ -50,7 +49,7 @@ const SimpleInput = (props) => {
       </div>
       <div className={emailInputClasses}>
         <label htmlFor='name'>Your Email</label>
-        <input type='text' id='name' value={enteredEmail} onBlur={() => setEnteredEmailTouched(true)} onChange={(e) => setEnteredEmail(e.target.value)} />
+        <input type='text' id='name' value={enteredEmail} onBlur={emailInputBlur} onChange={setEmailChangeHandler} />
         {emailInputIsInvalid && <p className="error-text">Email should have @</p>}
       </div>
       <div className="form-actions">
