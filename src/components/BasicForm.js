@@ -61,18 +61,18 @@ const BasicForm = (props) => {
         <div className={FirstNameInputClasses}>
           <label htmlFor='name'>First Name</label>
           <input type='text' value={first_name} onBlur={firstnameOnBlur} onChange={firstnameOnChange} id='name' />
-          {firstnameHasError && <p>invalid firstname</p>}
+          {firstnameHasError && <p className="error-text">invalid firstname</p>}
         </div>
         <div className={lastNameInputClasses}>
           <label htmlFor='name'>Last Name</label>
           <input type='text' id='name' value={last_name} onBlur={lastnameOnBlur} onChange={lastnameOnChange} />
-          {lastnameHasError && <p>invalid lastname</p>}
+          {lastnameHasError && <p className="error-text">invalid lastname</p>}
         </div>
       </div>
       <div className={emailInputClasses}>
         <label htmlFor='name'>E-Mail Address</label>
         <input type='text' id='name' value={email} onBlur={emailOnBlur} onChange={emailOnChange} />
-        {emailHasError && <p>invalid lastname</p>}
+        {emailHasError && <p className="error-text">invalid lastname</p>}
       </div>
       <div className='form-actions'>
         <button disabled={!formIsValid}>Submit</button>
